@@ -1,0 +1,23 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-latest-tag
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: image-must-not-use-latest
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+                - Deployment
+      validate:
+        message: Images must use immutable version tags.
+        pattern:
+          spec:
+            =(template):
+              =(spec):
+                containers:
+                  - image: "!*:latest"

@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: hardening-demo-ingress
+  namespace: hardening-demo
+spec:
+  podSelector:
+    matchLabels:
+      app: hardening-demo
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: hardening-demo
