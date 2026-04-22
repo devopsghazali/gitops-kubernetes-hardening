@@ -15,9 +15,16 @@ spec:
     spec:
       containers:
         - name: app
-          image: devopsghazali/gitops-kubernetes-hardening:1.0.0
+          image: dockerapp:v1
           ports:
             - containerPort: 8080
+          
+          # YAHAN SE UPDATE SHURU HAI
+          envFrom:
+            - secretRef:
+                name: app-port-config # Yeh wahi secret hai jo SealedSecret ne banaya hai
+          # YAHAN TAK UPDATE HAI
+
           resources:
             requests:
               cpu: 100m
@@ -29,3 +36,5 @@ spec:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             runAsNonRoot: true
+            # Ek choti si suggestion: runAsUser bhi add kar sakte ho safety ke liye
+            runAsUser: 1000
